@@ -1,7 +1,5 @@
 # Install PHP & MySQL for running sites on WordPress
-#
 # Run mysql_secure_install playbook to complete installation on first provision
-# run with ./deploy/run-playbook.sh mysql_secure_install <inventory> mysql_root_password=<your password>
 
 - name: install apt packages for php & mysql
   apt: name={{item}} state=latest update_cache=yes
