@@ -36,3 +36,20 @@ project root directory, not the deploy directory.
 Also, be sure to add the `.vagrant` folder to your project's
 `.gitignore` file so that directory's contents, which are auto-generated
 by Vagrant, aren't committed with your project's source.
+
+### Config
+
+Let's assume you are working on a project called "Groudskeeper".
+
+* The git repo should be at github.com/saplingdigitalltd/groundskeeper
+* The local dev url should be groundskeeper.dev
+
+In this case the "project name" is "groundskeeper". You will need to set
+this as the "project_name" variable in `deploy/ansible/group_vars`.
+
+	# This var is referenced by a few other vars, eg. git_repo, hostname, site_fqdn.
+	project_name: groundskeeper
+
+You will also need to set up the production site's Fully Qualified
+Domain Name (fqdn). In this case it might be something like
+`groundskeeper.com` or `groundskeeper.sapling.digital`.
