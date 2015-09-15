@@ -18,15 +18,15 @@ site](https://deployment-workflow.bocoup.com).
 
 The following important files need to be copied to your project.
 
-* [Vagrantfile](Vagrantfile)
-* [ansible.cfg](ansible.cfg)
-* [.gitignore](.gitignore)
-* [deploy/](deploy/)
+* `Vagrantfile`
+* `ansible.cfg`
+* `deploy/`
+* `public/`
 
-Copy this project's files so that the deploy directory is in the root of
-your project Git repository. Be sure to copy recursively and preserve
-file modes, eg. executable, so that the bash helper script continues to
-work. 
+Copy this project's files so that the deploy and public directories are
+in the root of your project Git repository. Be sure to copy recursively
+and preserve file modes, eg. executable, so that the bash helper script
+continues to work. 
 
 	cp -rp . path/to/your/project/
 
@@ -91,3 +91,14 @@ machine still being provisioned.
 If this persits, stop the process with `ctrl+c` and open the Virtual Box
 app to manually shutdown the machine. You should now be able to run
 `vagrant up` successfully but if not, ask for help.
+
+### Up and Running
+
+Ensure you've followed the steps above to move these tasks to your
+specific project and configured the project name and hosts accordingly.
+
+If you've not already done so, run `vagrant up` to boot up the VM. This
+will also run the playbooks to provision and configure the machine ready
+for your project.
+
+Once complete, browse to 

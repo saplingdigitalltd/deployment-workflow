@@ -118,7 +118,7 @@ users:
 git_repo: git@github.com:saplingdigitalltd/{{project_name}}.git
 
 # Parent directory for cloned repository directories. The clone_path and
-# site_path should be children of this directory.
+# site_path should be children of this "mount" directory.
 base_path: /mnt
 
 # Temporary location where the Git repo will be cloned and the build scripts
