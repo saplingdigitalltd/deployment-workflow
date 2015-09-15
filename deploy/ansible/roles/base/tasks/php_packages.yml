@@ -1,0 +1,10 @@
+# Install PHP-FPM for running sites on WordPress
+
+- name: install apt packages for php
+  apt: name={{item}} state=latest update_cache=yes
+  with_items:
+    - mysql-server
+    - php5-mysql
+    - php5
+    - libapache2-mod-php5
+    - php5-mcrypt

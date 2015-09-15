@@ -50,6 +50,10 @@ npm_global_modules:
   - {name: bower}
   - {name: gulp}
 
+# Does the project require PHP & MySQL or Ruby?
+requires_php: true
+requires_ruby: false
+
 ############
 # WEB SERVER
 ############

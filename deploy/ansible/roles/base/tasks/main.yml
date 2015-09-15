@@ -24,3 +24,6 @@
     version={{ item.version | default(omit) }}
     global=yes
   with_items: npm_global_modules
+
+- include: php_packages.yml
+  when: requires_php
