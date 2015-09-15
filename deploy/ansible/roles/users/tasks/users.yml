@@ -17,3 +17,4 @@
     state=present exclusive=yes
   with_items: users
   when: item.public_keys is defined and item.public_keys | length > 0
+

@@ -43,6 +43,7 @@ apt_packages:
   - nginx
   - git
   - nodejs
+  - zsh
 
 # Any npm global modules to install. Npm module versions may be specified like
 # - {name: bower, version: 1.2.3}
@@ -108,9 +109,12 @@ confs:
 # If you have no users to define here, set users to an empty array, like:
 # users: []
 users:
-  - name: guyroutledge
+  - name: guy
     state: present
+    github_name: guyroutledge
     real_name: Guy Routledge
+    shell: /bin/zsh
+    dotfiles: true
     shadow_pass: $1$STr4+F+y$ih0sNLMZFwBfEZTCt.Zk90
     public_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDhF5BsAnlL5B0ZjcXyI3qsCmji6nw217vTQFOHUU8NfQih7iHamwu57GRFxRqWZ7vQMki1fHyDwyyUWZyBsZRJS6oYu4zQKsr9zC03bZKbWiWQBwsuVcdWl5iPBa4wzFotY1vqg/A9wNPkq2R6GubVwE33QvasPgRl34N5XMYIZlq00VoKX9CjXZnmP9AEKWuWrkSdaB/hcq3AuZBi0LhsOnxH8CAiYyrcW8WDB2GkGAERRBrLw0w7XE21qea0FFTrzbq48GHSrSwUX6xHRA1q/L8UYa0ReCq+SKI6gP1JqrZp5PLde3mt+8qU9BEZFyQU+MAviA4CGO/1j1cx2u3d guy@guy.local

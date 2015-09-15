@@ -6,7 +6,7 @@
   user:
     state: present
     name: "{{ lookup('env', 'USER') }}"
-    shell: /bin/bash
+    shell: /bin/zsh
     groups: sudo
   register: user
 
