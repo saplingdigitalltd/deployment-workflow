@@ -9,7 +9,8 @@
 
 - name: fetch dotfiles for user
   git:
-    repo=git@github.com:{{ item.github_name }}/dotfiles.git
+    repo=https://github.com/{{ item.github_name }}/dotfiles.git
     dest=/home/{{ item.name }}/dotfiles
   when: item.dotfiles is defined
   with_items: users
+  tags: dotfiles
