@@ -7,9 +7,15 @@
     - mysql-server
     - php5-mysql
     - python-mysqldb
-    - php5
+    - php5-fpm
+    - php5-memcached
     - libapache2-mod-php5
     - php5-mcrypt
+  notify: 
+    - start mysql
+    - start php-fpm
 
-- name: start mysql
-  service: name=mysql state=started
+- name: set php.ini for php-fpm
+  lineinfile: dest=/etc/php5/fpm/php.ini regexp=fix_pathinfo=1 line=cgi.fix_pathinfo=0
+  notify: reload php-fpm
+
