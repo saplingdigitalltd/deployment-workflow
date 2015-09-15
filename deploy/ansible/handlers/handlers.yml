@@ -7,7 +7,7 @@
   # https://github.com/ansible/ansible-modules-core/pull/999
   # service: name=ssh state=restarted
 
-- name: reload php-fpm
+- name: start php-fpm
   service: name=php5-fpm state=started
 
 - name: reload php-fpm
