@@ -4,6 +4,15 @@
 # DON'T FORGET TO SAVE THE ROOT PASSWORD IN THE 1PASSWORD VAULT
 # (especially for production/staging)
 
+- name: install apt packages for mysql
+  apt: name={{item}} state=latest update_cache=yes
+  with_items:
+    - mysql-server
+    - php5-mysql
+    - python-mysqldb
+  notify: 
+    - start mysql
+
 - name: delete anonymous MySQL server user for {{ ansible_hostname }}
   action: mysql_user user="" host="{{ ansible_hostname }}" state="absent"
   tags: install
@@ -30,6 +39,7 @@
     - 127.0.0.1
     - ::1
     - localhost
+  when: mysql_root_user is defined and mysql_root_password is defined
   tags: install
 
 # Create DB

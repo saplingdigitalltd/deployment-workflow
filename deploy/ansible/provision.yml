@@ -7,6 +7,9 @@
 - hosts: all
   sudo: yes
   roles:
-    - {role: base, tags: base}
+    - {role: base,  tags: base}
+    - {role: php,   tags: php,   when: requires_php}
+    - {role: mysql, tags: mysql, when: requires_mysql}
+    - {role: ruby,  tags: ruby,  when: requires_ruby}
   handlers:
     - include: handlers/handlers.yml

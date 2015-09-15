@@ -44,6 +44,7 @@ apt_packages:
   - git
   - nodejs
   - zsh
+  - vim-nox
 
 # Any npm global modules to install. Npm module versions may be specified like
 # - {name: bower, version: 1.2.3}
@@ -53,7 +54,8 @@ npm_global_modules:
 
 # Does the project require PHP & MySQL or Ruby?
 requires_php: true
-requires_ruby: false
+requires_ruby: true
+requires_mysql: true
 
 ############
 # WEB SERVER
