@@ -1,5 +1,5 @@
 # mysql secure installation
-# run with ./deploy/run-playbook.sh mysql <inventory> mysql_root_password=<your password> --tags=install
+# run with ./deploy/run-playbook.sh mysql <inventory> --tags=install mysql_root_user=<user> mysql_root_password=<password>
 
 # DON'T FORGET TO SAVE THE ROOT PASSWORD IN THE 1PASSWORD VAULT
 # (especially for production/staging)
@@ -41,7 +41,7 @@
             login_password={{ p }}
             db={{ name }}
             state=present
-  when: db_name is defined
+  when: name is defined
   tags: new_db
 
 # Remove DB
@@ -53,7 +53,7 @@
             login_password={{ p }}
             db={{ name }}
             state=absent
-  when: db_name is defined
+  when: name is defined
   tags: remove_db
 
 # Create DB User
@@ -67,7 +67,7 @@
               password={{pass}} 
               priv=*.*:ALL 
               state=present
-  when: db_user and db_password is defined
+  when: user and pass is defined
   tags: new_user
 
 # Remove DB User
@@ -77,7 +77,42 @@
 - name: remove database user {{ user }}
   mysql_user: login_user={{ u }}
               login_password={{ p }}
-              name={{name}} 
+              name={{name}}
               state=absent
-  when: db_user is defined
+  when: name is defined
   tags: remove_user
+
+# Dump and Import DB
+#
+- name: dump {{name}} database to temp file
+  mysql_db: login_user={{ u }}
+            login_password={{ p }}
+            name={{name}} 
+            state=dump
+            target=/tmp/{{ ansible_hostname }}-{{ name }}.sql
+  when: name is defined
+  tags: dump_db
+
+- name: download database dump to temp directory
+  fetch:
+    src=/tmp/{{ ansible_hostname }}-{{ name }}.sql
+    dest=/tmp/dumps/{{ ansible_hostname }}-{{ name }}.sql
+  when: name is defined
+  tags: dump_db
+
+- name: upload db {{name}} sql dump to remote
+  copy:
+    src=/tmp/dumps/{{ ansible_hostname }}-{{ name }}.sql
+    dest=/tmp/{{ ansible_hostname }}-{{ name }}.sql
+  when: name is defined
+  tags: import_db
+
+- name: import sql into {{name}} db
+  mysql_db: login_user={{ u }}
+            login_password={{ p }}
+            name={{name}} 
+            state=import
+            target=/tmp/{{ ansible_hostname }}-{{ name }}.sql
+  when: name is defined
+  tags: import_db
+
