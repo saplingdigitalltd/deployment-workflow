@@ -8,10 +8,10 @@
     - php5-memcached
     - libapache2-mod-php5
     - php5-mcrypt
-  notify: 
-    - start php-fpm
 
 - name: set php.ini for php-fpm
   lineinfile: dest=/etc/php5/fpm/php.ini regexp=fix_pathinfo=1 line=cgi.fix_pathinfo=0
   notify: reload php-fpm
 
+- name: ensure php-fpm is running
+  service: name=php5-fpm state=started
