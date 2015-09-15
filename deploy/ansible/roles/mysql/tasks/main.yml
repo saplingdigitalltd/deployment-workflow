@@ -1,0 +1,83 @@
+# mysql secure installation
+# run with ./deploy/run-playbook.sh mysql <inventory> mysql_root_password=<your password> --tags=install
+
+# DON'T FORGET TO SAVE THE ROOT PASSWORD IN THE 1PASSWORD VAULT
+# (especially for production/staging)
+
+- name: delete anonymous MySQL server user for {{ ansible_hostname }}
+  action: mysql_user user="" host="{{ ansible_hostname }}" state="absent"
+  tags: install
+
+- name: delete anonymous MySQL server user for localhost
+  action: mysql_user user="" state="absent"
+  tags: install
+
+- name: remove the MySQL test database
+  action: mysql_db db=test state=absent
+  tags: install
+
+# 'localhost' needs to be the last item for idempotency, see
+# http://ansible.cc/docs/modules.html#mysql-user
+- name: Change root user password on first run
+  mysql_user: login_user=root
+              login_password=''
+              name={{ mysql_root_user}}
+              password={{ mysql_root_password }}
+              priv=*.*:ALL,GRANT
+              host={{ item }}
+  with_items:
+    - "{{ ansible_hostname }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+  tags: install
+
+# Create DB
+# When running this play, make sure to pass the root password and db
+# name as variables
+#
+- name: create database {{ name }}
+  mysql_db: login_user={{ u }}
+            login_password={{ p }}
+            db={{ name }}
+            state=present
+  when: db_name is defined
+  tags: new_db
+
+# Remove DB
+# When running this play, make sure to pass the root password and db
+# name as variables
+#
+- name: remove database {{ name }}
+  mysql_db: login_user={{ u }}
+            login_password={{ p }}
+            db={{ name }}
+            state=absent
+  when: db_name is defined
+  tags: remove_db
+
+# Create DB User
+# When running this play, make sure to pass the root password and db
+# user and their password as variables
+#
+- name: create database user {{ user }}
+  mysql_user: login_user={{ u }}
+              login_password={{ p }}
+              user={{user}} 
+              password={{pass}} 
+              priv=*.*:ALL 
+              state=present
+  when: db_user and db_password is defined
+  tags: new_user
+
+# Remove DB User
+# When running this play, make sure to pass the root password and db
+# user as variables
+#
+- name: remove database user {{ user }}
+  mysql_user: login_user={{ u }}
+              login_password={{ p }}
+              name={{name}} 
+              state=absent
+  when: db_user is defined
+  tags: remove_user
