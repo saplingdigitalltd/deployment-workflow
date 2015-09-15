@@ -37,7 +37,7 @@ Also, be sure to add the `.vagrant` folder to your project's
 `.gitignore` file so that directory's contents, which are auto-generated
 by Vagrant, aren't committed with your project's source.
 
-### Config
+### Config Vars
 
 Let's assume you are working on a project called "Groudskeeper".
 
@@ -53,3 +53,25 @@ this as the "project_name" variable in `deploy/ansible/group_vars`.
 You will also need to set up the production site's Fully Qualified
 Domain Name (fqdn). In this case it might be something like
 `groundskeeper.com` or `groundskeeper.sapling.digital`.
+
+### Vagrantfile
+
+In the Vagrantfile, set the local development url for the project (this
+is built from the project name set above, ending in the suffix `.dev`.
+
+	config.hostsupdater.aliases = ['groundskeeper.dev']
+
+### Inventory
+
+The inventory files in `deploy/ansible/inventory` are used to run
+playbooks for specific environments. For each environment, ensure you
+set the correct fqdn eg:
+
+	# vagrant host
+	vagrant ansible_ssh_host=groundskeeper.dev
+
+	# staging host
+	groundskeeper.staging.sapling.digital site_fqdn=groundskeeper.staging.sapling.digital 
+
+	# production host
+	groundskeeper.com
