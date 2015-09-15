@@ -1,10 +1,17 @@
-# Install PHP-FPM for running sites on WordPress
+# Install PHP & MySQL for running sites on WordPress
+#
+# Run mysql_secure_install playbook to complete installation on first provision
+# run with ./deploy/run-playbook.sh mysql_secure_install <inventory> mysql_root_password=<your password>
 
-- name: install apt packages for php
+- name: install apt packages for php & mysql
   apt: name={{item}} state=latest update_cache=yes
   with_items:
     - mysql-server
     - php5-mysql
+    - python-mysqldb
     - php5
     - libapache2-mod-php5
     - php5-mcrypt
+
+- name: start mysql
+  service: name=mysql state=started
