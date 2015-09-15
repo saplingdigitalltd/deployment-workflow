@@ -75,3 +75,19 @@ set the correct fqdn eg:
 
 	# production host
 	groundskeeper.com
+
+### Debugging Vagrant
+
+Sometimes Vagrant can get stuck - if there was an error in running
+an Ansible playbook or if the machine is already running.
+
+First try to destroy the machine with `vagrant destroy` and re-run
+`vagrant up`.
+
+When booting the machine for the first time with `vagrant up` you may
+see warnings of "Connection timeout". This can sometimes be due to the
+machine still being provisioned. 
+
+If this persits, stop the process with `ctrl+c` and open the Virtual Box
+app to manually shutdown the machine. You should now be able to run
+`vagrant up` successfully but if not, ask for help.
