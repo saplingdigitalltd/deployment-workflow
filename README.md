@@ -92,7 +92,7 @@ If this persits, stop the process with `ctrl+c` and open the Virtual Box
 app to manually shutdown the machine. You should now be able to run
 `vagrant up` successfully but if not, ask for help.
 
-### Up and Running
+### Up and Running in Development
 
 Ensure you've followed the steps above to move these tasks to your
 specific project and configured the project name and hosts accordingly.
@@ -101,4 +101,42 @@ If you've not already done so, run `vagrant up` to boot up the VM. This
 will also run the playbooks to provision and configure the machine ready
 for your project.
 
-Once complete, browse to 
+Once complete, browse to your local host (eg. groundskeeper.dev) and you
+should see a success message.
+
+If you want/need to make changes to the server, make sure to run
+`vagrant provision`. If you want to run specific plays again (eg.
+because they failed previously) you can use the built in `run.sh`
+script - details below.
+
+## Up and running in Staging/Production
+
+We don't use Vagrant in staging or production environments so playbooks
+must be exectued manually to set up the base machine, provision packages
+and manage users.
+
+For convenience a helper script is included at `deploy/run.sh`. Use it
+like this:
+
+	# provision the production server
+	./deploy/run.sh provision production
+
+	# configure nginx on the production server
+	./deploy/run.sh configure production --tags=nginx
+
+	# setup mysql on staging, setting the new root user and password
+	./deploy/run.sh mysql staging --tags=install mysql_root_user=username mysql_root_password=password
+
+	# create a mysql database on staging
+	./deploy/run.sh mysql staging --tags=new_db name=new_db_name u=username p=password
+
+* Execute the script `./deploy/run.sh`
+* The first argument is the playbook to run
+* The second argument is the server to run it on
+* Tags can be passed to limit the plays that are run with `--tags`
+* Extra variables can be passed as `key=value` in a space separated list
+
+More info can be found in 
+[the original Bocoup docs](https://deployment-workflow.bocoup.com/#playbook-helper-script)
+although do note the difference in file name - we've shortened it to
+make it easier to type!
