@@ -119,7 +119,7 @@ For convenience a helper script is included at `deploy/run.sh`. Use it
 like this:
 
 	# provision the production server
-	./deploy/run.sh provision production
+	./deploy/run.sh provision production --user=root
 
 	# configure nginx on the production server
 	./deploy/run.sh configure production --tags=nginx

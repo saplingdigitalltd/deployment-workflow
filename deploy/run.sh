@@ -117,7 +117,7 @@ command=(
 # was specified (the default "ubuntu" user in AWS instances has passwordless
 # sudo, but any users created via ansible should require passwords for sudo).
 if [[ "${inventory##*/}" != "vagrant" ]]; then
-  if ! has_arg -K --ask-sudo-pass --ask-become-pass && ! has_arg --user=ubuntu; then
+  if ! has_arg -K --ask-sudo-pass --ask-become-pass && ! has_arg --user=root; then
     command=("${command[@]}" --ask-become-pass)
   fi
 fi
