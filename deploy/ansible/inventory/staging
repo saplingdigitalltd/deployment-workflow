@@ -2,5 +2,9 @@
 # here will allow nginx to respond to requests made to that FQDN instead of the
 # production server's FQDN. This is likely the only change you will need to
 # make between production and staging.
+#
+# 46.101.12.100 is the IP of the sapling staging server
+# site_fqdn can be the name of the project you want to deploy to staging
+# eg. groundskeeper.sapling.digital
 
-46.101.12.100 site_fqdn=46.101.12.100
+46.101.12.100 site_fqdn=groundskeeper.sapling.digital

@@ -20,7 +20,7 @@
   with_items: confs + shared
 
 - name: generate new nginx config files
-  template: src={{item.file}} dest={{item.directory}}/
+  template: src={{item.template}} dest={{item.directory}}/{{item.file}}
   register: nginx_conf
   with_items: confs + shared
   notify: restart nginx
@@ -46,3 +46,10 @@
 
 - fail: msg="nginx config is invalid"
   when: nginx_test_valid | failed
+
+- name: enable virtual hosts
+  file:
+    src={{nginx_dir}}/sites-available/{{item.file}}
+    dest={{nginx_dir}}/sites-enabled/{{item.file}}
+    state=link
+  with_items: confs

@@ -81,14 +81,14 @@ public_path: "{{site_path}}/public"
 
 # Nginx dir and conf dir.
 nginx_dir: /etc/nginx
-conf_dir: "{{nginx_dir}}/conf.d"
+conf_dir: "{{nginx_dir}}/sites-available"
 
 # Nginx templated configuration files to create.
 shared:
-  - {file: ssl_params, directory: "{{nginx_dir}}"}
-  - {file: gzip_params, directory: "{{nginx_dir}}"}
+  - {template: ssl_params, file: ssl_params, directory: "{{nginx_dir}}"}
+  - {template: gzip_params, file: gzip_params, directory: "{{nginx_dir}}"}
 confs:
-  - {file: site.conf, directory: "{{conf_dir}}"}
+  - {template: site.php.conf, file: "{{site_fqdn}}", directory: "{{conf_dir}}"}
 
 #######
 # USERS
@@ -132,7 +132,7 @@ git_repo: git@github.com:saplingdigitalltd/{{project_name}}.git
 
 # Parent directory for cloned repository directories. The clone_path and
 # site_path should be children of this "mount" directory.
-base_path: /mnt
+base_path: "/var/www/{{site_fqdn}}"
 
 # Temporary location where the Git repo will be cloned and the build scripts
 # will be run before going live.
