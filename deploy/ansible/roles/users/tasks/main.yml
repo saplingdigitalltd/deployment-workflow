@@ -11,6 +11,20 @@
   git:
     repo=https://github.com/{{ item.github_name }}/dotfiles.git
     dest=/home/{{ item.name }}/dotfiles
-  when: item.dotfiles is defined
+  sudo_user: "{{ item.name }}"
+  when: item.dotfiles
   with_items: users
+  ignore_errors: yes
   tags: dotfiles
+
+- name: run dotfiles install script for user
+  shell: dotfiles/install.sh
+  args:
+    chdir: /home/{{ item.name }}
+    creates: /home/{{ item.name }}/dotfiles_old
+  sudo_user: "{{ item.name }}"
+  register: sh
+  with_items: users
+  when: item.dotfiles
+  tags: dotfiles
+  ignore_errors: yes
