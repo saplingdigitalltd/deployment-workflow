@@ -115,6 +115,17 @@ We don't use Vagrant in staging or production environments so playbooks
 must be exectued manually to set up the base machine, provision packages
 and manage users.
 
+To get a new Digital Ocean droplet up and running, you'll need to run
+the following plays:
+
+* Provision (to install packages)
+* Configure (for general config and user settings)
+
+If you require a MySQL database (eg. for a WP project)
+
+* Run the mysql `install` play and *save the details in 1Password!*
+* Run the mysql `new_db` play
+
 For convenience a helper script is included at `deploy/run.sh`. Use it
 like this:
 

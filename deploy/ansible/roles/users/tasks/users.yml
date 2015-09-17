@@ -14,7 +14,7 @@
 
 - name: ensure user public keys are synced
   authorized_key: user={{item.name}} key="{{ item.public_keys | join('\n') }}"
-    state=present exclusive=yes
+    state=present
   with_items: users
   when: item.public_keys is defined and item.public_keys | length > 0
 
