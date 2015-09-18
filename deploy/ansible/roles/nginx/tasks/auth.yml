@@ -6,7 +6,7 @@
     path: /etc/nginx/private
     state: directory
     owner: root
-    mode: 0750
+    mode: 0755
 
 - name: add {{ user }} with {{ password }} to htpasswd file
   htpasswd:
