@@ -7,4 +7,4 @@
 # site_fqdn can be the name of the project you want to deploy to staging
 # eg. groundskeeper.sapling.digital
 
-46.101.12.100 site_fqdn=groundskeeper.sapling.digital
+46.101.12.100 site_fqdn=groundskeeper.sapling.digital auth_basic=true
