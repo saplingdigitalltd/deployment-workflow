@@ -10,7 +10,7 @@
 
 - name: add {{ user }} with {{ password }} to htpasswd file
   htpasswd:
-    path: /etc/nginx/private/.htpasswd
+    path: /etc/nginx/private/{{site_fqdn}}
     name: "{{ u }}"
     password: "{{ p }}"
     owner: root
@@ -21,7 +21,7 @@
 
 - name: remove {{ user }} from htpasswd file
   htpasswd:
-    path: /etc/nginx/private/.htpasswd
+    path: /etc/nginx/private/{{site_fqdn}}
     name: "{{ u }}"
     state: absent
   when: u is defined
