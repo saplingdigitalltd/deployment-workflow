@@ -53,9 +53,9 @@ npm_global_modules:
   - {name: gulp}
 
 # Does the project require PHP & MySQL or Ruby?
-requires_php: true
-requires_ruby: true
-requires_mysql: true
+requires_php: false
+requires_ruby: false
+requires_mysql: false
 
 ############
 # WEB SERVER
