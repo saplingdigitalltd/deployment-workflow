@@ -88,7 +88,7 @@ shared:
   - {template: ssl_params, file: ssl_params, directory: "{{nginx_dir}}"}
   - {template: gzip_params, file: gzip_params, directory: "{{nginx_dir}}"}
 confs:
-  - {template: site.php.conf, file: "{{site_fqdn}}", directory: "{{conf_dir}}"}
+  - {template: site.conf, file: "{{site_fqdn}}", directory: "{{conf_dir}}"}
 
 #######
 # USERS
