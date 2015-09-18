@@ -50,3 +50,26 @@
     line="%sudo ALL=(ALL:ALL) NOPASSWD:ALL"
     validate="visudo -cf %s"
   when: env == "development"
+
+- name: check swapfile enabled
+  command: swapon -s | grep swapfile
+  register: swapfile
+
+- name: enable swapfile if not exists
+  shell: dd if=/dev/zero of=/swapfile bs=1024 count=256k && mkswap /swapfile && swapon /swapfile
+  when: swapfile.stdout.find('swapfile') == -1 # when "swapfile" not found in stdout
+
+- name: check swapfile in fstab
+  lineinfile:
+    dest=/etc/fstab
+    state=present
+    regexp="swapfile"
+    line="/swapfile       none    swap    sw      0       0"
+
+- name: set swappiness
+  shell: echo 10 | sudo tee /proc/sys/vm/swappiness && echo vm.swappiness = 10 | sudo tee -a /etc/sysctl.conf
+  when: swapfile.stdout.find('swapfile') == -1 # when "swapfile" not found in stdout
+
+- name: set swapfile permissions
+  shell: sudo chown root:root /swapfile && sudo chmod 0600 /swapfile
+  when: swapfile.stdout.find('swapfile') == -1 # when "swapfile" not found in stdout
