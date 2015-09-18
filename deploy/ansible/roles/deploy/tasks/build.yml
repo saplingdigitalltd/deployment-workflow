@@ -7,15 +7,18 @@
 - name: check for package.json
   stat: path={{clone_path}}/package.json
   register: npm
+  tags: npm
 
 - name: install npm modules
   npm: path="{{clone_path}}"
   when: npm.stat.exists
   ignore_errors: yes
+  tags: npm
 
 - name: check for bower.json
   stat: path={{clone_path}}/bower.json
   register: bower
+  tags: bower
 
 - name: install bower modules
   command: bower install --allow-root
@@ -23,10 +26,12 @@
     chdir: "{{clone_path}}"
   when: bower.stat.exists
   ignore_errors: yes
+  tags: bower
 
 - name: check for gulpfile
   stat: path={{clone_path}}/Gulpfile.js
   register: gulpfile
+  tags: gulp
 
 - name: run gulp build task
   command: gulp dist
@@ -34,10 +39,12 @@
     chdir: "{{clone_path}}"
   when: gulpfile.stat.exists
   ignore_errors: yes
+  tags: gulp
 
 - name: check for gemfile 
   stat: path={{clone_path}}/Gemfile
   register: gemfile
+  tags: gems
 
 - name: install gemfile dependencies with bundler
   command: bash -lc "bundle install"
@@ -45,17 +52,19 @@
     chdir: "{{clone_path}}"
   when: gemfile.stat.exists
   ignore_errors: yes
+  tags: gems
 
 - name: check if jekyll project
   command: grep 'jekyll' Gemfile
   args:
     chdir: "{{clone_path}}"
   register: jekyll
-  when: gemfile.stat.exists
   changed_when: False
+  tags: jekyll
 
 - name: build jekyll site into "public" folder
   shell: bash -lc "jekyll build -d public"
   args:
     chdir: "{{clone_path}}"
   when: jekyll.rc == 0 
+  tags: jekyll
