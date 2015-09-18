@@ -60,6 +60,7 @@
     chdir: "{{clone_path}}"
   register: jekyll
   changed_when: False
+  ignore_errors: yes
   tags: jekyll
 
 - name: build jekyll site into "public" folder

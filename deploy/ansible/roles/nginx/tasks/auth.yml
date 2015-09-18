@@ -1,0 +1,28 @@
+# Generate strong dhe param and self-signed ssl cert/key (in development only!).
+# In production, you'll need your own valid ssl cert/key.
+
+- name: create folder for htpasswd files
+  file:
+    path: /etc/nginx/private
+    state: directory
+    owner: root
+    mode: 0750
+
+- name: add {{ user }} with {{ password }} to htpasswd file
+  htpasswd:
+    path: /etc/nginx/private/.htpasswd
+    name: "{{ u }}"
+    password: "{{ p }}"
+    owner: root
+    group: www-data
+    mode: 0640
+  when: u is defined and p is defined
+  tags: add_user
+
+- name: remove {{ user }} from htpasswd file
+  htpasswd:
+    path: /etc/nginx/private/.htpasswd
+    name: "{{ u }}"
+    state: absent
+  when: u is defined
+  tags: remove_user

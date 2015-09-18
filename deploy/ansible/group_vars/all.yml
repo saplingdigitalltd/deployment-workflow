@@ -45,6 +45,7 @@ apt_packages:
   - nodejs
   - zsh
   - vim-nox
+  - python-passlib
 
 # Any npm global modules to install. Npm module versions may be specified like
 # - {name: bower, version: 1.2.3}
@@ -74,6 +75,8 @@ ssl_key_path: /etc/ssl/star.bocoup.com.key
 
 # Use a custom parameter for stronger DHE key exchange.
 dhe_param_path: /etc/ssl/certs/dhparam.pem
+
+auth_basic: false
 
 # The directory that nginx will serve as the production site. This is typically
 # where your index.html file exists (or will exist after the build process).
