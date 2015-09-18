@@ -4,19 +4,58 @@
 
 # Modify as-needed!
 
-#- name: install npm modules
-#  npm: path="{{clone_path}}"
-#
-#- name: install bower modules
-#  command: bower install --allow-root
-#  args:
-#    chdir: "{{clone_path}}"
-#
-#- name: build production version
-#  shell: npm run build
-#  args:
-#    chdir: "{{clone_path}}"
+- name: check for package.json
+  stat: path={{clone_path}}/package.json
+  register: npm
 
-- name: generate build info file
-  template: src=build_info.txt dest={{clone_path}}/{{build_info_path}}
-  when: build_info_path is defined
+- name: install npm modules
+  npm: path="{{clone_path}}"
+  when: npm.stat.exists
+  ignore_errors: yes
+
+- name: check for bower.json
+  stat: path={{clone_path}}/bower.json
+  register: bower
+
+- name: install bower modules
+  command: bower install --allow-root
+  args:
+    chdir: "{{clone_path}}"
+  when: bower.stat.exists
+  ignore_errors: yes
+
+- name: check for gulpfile
+  stat: path={{clone_path}}/Gulpfile.js
+  register: gulpfile
+
+- name: run gulp build task
+  command: gulp dist
+  args:
+    chdir: "{{clone_path}}"
+  when: gulpfile.stat.exists
+  ignore_errors: yes
+
+- name: check for gemfile 
+  stat: path={{clone_path}}/Gemfile
+  register: gemfile
+
+- name: install gemfile dependencies with bundler
+  command: bash -lc "bundle install"
+  args:
+    chdir: "{{clone_path}}"
+  when: gemfile.stat.exists
+  ignore_errors: yes
+
+- name: check if jekyll project
+  command: grep 'jekyll' Gemfile
+  args:
+    chdir: "{{clone_path}}"
+  register: jekyll
+  when: gemfile.stat.exists
+  changed_when: False
+
+- name: build jekyll site into "public" folder
+  shell: bash -lc "jekyll build -d public"
+  args:
+    chdir: "{{clone_path}}"
+  when: jekyll.rc == 0 
