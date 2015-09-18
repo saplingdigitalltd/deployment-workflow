@@ -16,7 +16,7 @@ site](https://deployment-workflow.bocoup.com).
 
 ### Getting started
 
-The following important files need to be copied to your project.
+The following important files and folders need to be copied to your project.
 
 * `Vagrantfile`
 * `ansible.cfg`
@@ -33,16 +33,13 @@ continues to work.
 The `Vagrantfile` and `ansible.cfg` file should be placed in your
 project root directory, not the deploy directory.
 
-Also, be sure to add the `.vagrant` folder to your project's
-`.gitignore` file so that directory's contents, which are auto-generated
-by Vagrant, aren't committed with your project's source.
-
 ### Config Vars
 
-Let's assume you are working on a project called "Groudskeeper".
+Let's assume you are working on a project called "Groundskeeper".
 
 * The git repo should be at github.com/saplingdigitalltd/groundskeeper
 * The local dev url should be groundskeeper.dev
+* The staging url should be groundskeeper.sapling.digital
 
 In this case the "project name" is "groundskeeper". You will need to set
 this as the "project_name" variable in `deploy/ansible/group_vars`.
@@ -57,7 +54,7 @@ Domain Name (fqdn). In this case it might be something like
 ### Vagrantfile
 
 In the Vagrantfile, set the local development url for the project (this
-is built from the project name set above, ending in the suffix `.dev`.
+should be the project name ending in the suffix `.dev`.
 
 	config.hostsupdater.aliases = ['groundskeeper.dev']
 
@@ -71,41 +68,25 @@ set the correct fqdn eg:
 	vagrant ansible_ssh_host=groundskeeper.dev
 
 	# staging host
-	groundskeeper.staging.sapling.digital site_fqdn=groundskeeper.staging.sapling.digital 
+	groundskeeper.sapling.digital site_fqdn=groundskeeper.sapling.digital 
 
 	# production host
 	groundskeeper.com
 
-### Debugging Vagrant
-
-Sometimes Vagrant can get stuck - if there was an error in running
-an Ansible playbook or if the machine is already running.
-
-First try to destroy the machine with `vagrant destroy` and re-run
-`vagrant up`.
-
-When booting the machine for the first time with `vagrant up` you may
-see warnings of "Connection timeout". This can sometimes be due to the
-machine still being provisioned. 
-
-If this persits, stop the process with `ctrl+c` and open the Virtual Box
-app to manually shutdown the machine. You should now be able to run
-`vagrant up` successfully but if not, ask for help.
-
 ### Up and Running in Development
 
-Ensure you've followed the steps above to move these tasks to your
+Ensure you've followed the steps above to move these files to your
 specific project and configured the project name and hosts accordingly.
 
 If you've not already done so, run `vagrant up` to boot up the VM. This
-will also run the playbooks to provision and configure the machine ready
-for your project.
+will also run the playbooks to provision and configure the VM ready
+for project development.
 
 Once complete, browse to your local host (eg. groundskeeper.dev) and you
 should see a success message.
 
 If you want/need to make changes to the server, make sure to run
-`vagrant provision`. If you want to run specific plays again (eg.
+`vagrant provision` afterwards. If you want to run specific plays again (eg.
 because they failed previously) you can use the built in `run.sh`
 script - details below.
 
@@ -141,11 +122,15 @@ like this:
 	# create a mysql database on staging
 	./deploy/run.sh mysql staging --tags=new_db name=new_db_name u=username p=password
 
+	# force gulp build scripts to run on production
+	./deploy/run.sh deploy production --tags=gulp force=true
+
 * Execute the script `./deploy/run.sh`
 * The first argument is the playbook to run
 * The second argument is the server to run it on
 * Tags can be passed to limit the plays that are run with `--tags`
 * Extra variables can be passed as `key=value` in a space separated list
+* Use `force=true` to force a build even if there are no commits to sync
 
 More info can be found in 
 [the original Bocoup docs](https://deployment-workflow.bocoup.com/#playbook-helper-script)
