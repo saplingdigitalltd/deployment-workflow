@@ -5,6 +5,9 @@
   apt: name={{item}} state=latest update_cache=yes
   with_items:
     - php5-fpm
+    - php5-gd
+    - imagemagick
+    - php5-imagick
     - php5-memcached
     - libapache2-mod-php5
     - php5-mcrypt
