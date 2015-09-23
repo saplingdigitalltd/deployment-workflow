@@ -90,6 +90,10 @@ If you want/need to make changes to the server, make sure to run
 because they failed previously) you can use the built in `run.sh`
 script - details below.
 
+If you're working on a new WP site, ensure the Vagrant file and other
+necessary files and folders are in the project root directory, not the
+theme directory.
+
 ## Up and running in Staging/Production
 
 We don't use Vagrant in staging or production environments so playbooks
