@@ -37,8 +37,3 @@
   args:
     chdir: "{{base_path}}"
   when: keep_n_most_recent is defined
-
-- name: ensure public folder and its contents is readable
-  command: chmod 755 public
-  args:
-    chdir: "{{site_path}}"
