@@ -8,5 +8,7 @@
 - hosts: vagrant
   sudo: yes
   tasks:
+    - name: check that the project directory exists first
+      file: path={{site_path}} state=directory
     - name: link vagrant synced directory to make it live
       file: path={{site_path}} state=link src={{synced_folder}} force=yes

@@ -14,6 +14,10 @@ site](https://deployment-workflow.bocoup.com).
 * [Vagrant](https://www.vagrantup.com/)
 * [vagrant-hostupdater](https://github.com/cogitatio/vagrant-hostsupdater)
 
+  % brew install ansible
+  % vagrant plugin install vagrant-hostsupdater
+
+
 ### Getting started
 
 The following important files and folders need to be copied to your project.
