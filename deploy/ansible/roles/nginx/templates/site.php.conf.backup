@@ -8,9 +8,11 @@ server {
   listen 80;
 {% endif %}
 
-  root {{public_path}};
-  index index.html index.htm index.php;
+  include gzip_params;
+
   server_name www.{{site_fqdn}} {{site_fqdn}};
+  root {{public_path}};
+  index index.html index.php;
 
   location / {
 
@@ -20,8 +22,21 @@ server {
   {% endif %}
 
     try_files $uri $uri/ /index.php?$args;
+
+	# add expires cache headers for static files
+	if ($request_uri ~* ".(ico|css|js|gif|jpg|jpe?g|png)*") {
+		expires 365d;
+		access_log off;
+		add_header Pragma public;
+		add_header Cache-control "public";
+		break;
+	}
   }
 
+  location ~ /$ {
+    index index.php;
+    try_files $uri $uri/ /index.php?$args;
+  }
   location ~ \.php$ {
     try_files $uri =404;
     fastcgi_split_path_info ^(.+\.php)(/.+)$;
@@ -29,7 +44,6 @@ server {
     fastcgi_index index.php;
     include fastcgi_params;
   }
-
   location ~ /\.ht {
     deny all;
   }
