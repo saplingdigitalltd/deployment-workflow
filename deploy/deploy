@@ -1,0 +1,31 @@
+#!/bin/sh
+set -x
+
+server="46.101.12.100"
+site_fqdn=""
+build_path=""
+
+ssh deploy@$server <<EOF
+  cd /var/www/$site_fqdn
+  git pull --rebase
+
+  echo "building project in: /var/www/$site_fqdn/$build_path"
+  cd /var/www/$site_fqdn/$build_path
+
+  echo "installing node packages..."
+  npm install --production
+
+  echo "installing bower packages..."
+  bower install
+
+  echo "running Gulp build script..."
+  gulp dist
+
+  exit
+EOF
+
+# Other build steps, use as needed
+# echo "installing gems from Gemfile..."
+# bundle install
+# echo "building Jekyll site..."
+# jekyll build -d public
