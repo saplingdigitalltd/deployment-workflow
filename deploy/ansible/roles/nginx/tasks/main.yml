@@ -1,6 +1,13 @@
 # Generate nginx config files (and ssl configuration, if ssl was specified),
 # rolling back changes if any part of the config is invalid.
 
+- name: set client max body to allocate memory for image uploads
+  lineinfile: dest=/etc/nginx/nginx.conf state=present line="        client_max_body_size 128m;" insertafter="^http"
+
+- name: turn sendfile off for vms
+  lineinfile: dest=/etc/nginx/nginx.conf state=present regexp="sendfile on;" line="        sendfile off;"
+  when: env == 'development'
+
 - include: ssl.yml
   when: ssl
 
