@@ -110,6 +110,11 @@ the following plays:
 * Provision (to install packages)
 * Configure (for general config and user settings)
 
+*In order to run these playbooks for the first time (before any users are
+set up via the scripts) you'll need to ensure your ssh keys have been added
+to the server. If you use multiple keys (with/without passwords) then
+you may have to set you `~/.ssh/config` to the correct key.*
+
 If you require a MySQL database (eg. for a WP project)
 
 * Run the mysql `install` play and *save the details in 1Password!*
