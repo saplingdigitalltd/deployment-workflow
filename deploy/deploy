@@ -7,10 +7,16 @@ build_path=""
 
 ssh deploy@$server <<EOF
   cd /var/www/$site_fqdn
+
+  echo "pulling down latest commits..."
   git pull --rebase
 
+  if (( $? )); then
+    echo "Failed to pull down latest changes" >&2
+	exit 1
+  fi
+
   echo "building project in: /var/www/$site_fqdn/$build_path"
-  cd /var/www/$site_fqdn/$build_path
 
   echo "installing node packages..."
   npm install --production
