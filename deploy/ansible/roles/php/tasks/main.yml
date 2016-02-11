@@ -14,7 +14,12 @@
 
 - name: set php.ini for php-fpm
   lineinfile: dest=/etc/php5/fpm/php.ini regexp=fix_pathinfo=1 line=cgi.fix_pathinfo=0
-  notify: reload php-fpm
+
+- name: set max_filesize for uploads
+  lineinfile: dest=/etc/php5/fpm/php.ini regexp=upload_max_filesize line=upload_max_filesize=10M
+
+- name: set post_max_size for uploads
+  lineinfile: dest=/etc/php5/fpm/php.ini regexp=post_max_size line=post_max_size=10M
 
 - name: ensure php-fpm is running
   service: name=php5-fpm state=started
