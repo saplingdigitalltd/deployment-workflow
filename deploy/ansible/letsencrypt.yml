@@ -1,0 +1,10 @@
+- hosts: all
+  user: root
+  roles:
+    - role: letsencrypt
+      letsencrypt_webroot_path: /var/www/{{site_fqdn}}
+      letsencrypt_email: hello@thefoodrush.com
+      letsencrypt_cert_domains:
+        - "www.{{site_fqdn}}"
+        - "{{site_fqdn}}"
+      letsencrypt_renewal_command_args: '--renew-hook "systemctl restart nginx"'

@@ -22,18 +22,24 @@
   shell: touch {{item.directory}}/{{item.file}}
   args:
     creates: "{{item.directory}}/{{item.file}}"
-  with_items: confs + shared
+  with_flattened:
+    - "{{confs}}"
+    - "{{shared}}"
 
 - name: backup existing nginx config files
   shell: cp {{item.file}} {{item.file}}.backup
   args:
     chdir: "{{item.directory}}"
-  with_items: confs + shared
+  with_flattened:
+    - "{{confs}}"
+    - "{{shared}}"
 
 - name: generate new nginx config files
   template: src={{item.template}} dest={{item.directory}}/{{item.file}}
   register: nginx_conf
-  with_items: confs + shared
+  with_flattened:
+    - "{{confs}}"
+    - "{{shared}}"
   notify: restart nginx
 
 - name: ensure nginx config is valid
@@ -45,14 +51,16 @@
 
 - name: remove temporary backups if new nginx config files are valid
   file: path={{item.directory}}/{{item.file}}.backup state=absent
-  with_items: confs + shared
+  with_flattened:
+    - "{{confs}}"
+    - "{{shared}}"
   when: nginx_test_valid | success
 
 - name: restore temporary backups if new nginx config files are invalid
   shell: mv {{item.file}}.backup {{item.file}}
   args:
     chdir: "{{item.directory}}"
-  with_items: confs
+  with_items: "{{confs}}"
   when: nginx_test_valid | failed
 
 - fail: msg="nginx config is invalid"
@@ -63,4 +71,4 @@
     src={{nginx_dir}}/sites-available/{{item.file}}
     dest={{nginx_dir}}/sites-enabled/{{item.file}}
     state=link
-  with_items: confs
+  with_items: "{{confs}}"

@@ -34,7 +34,7 @@ apt_keys:
 # Node.js 0.12.x: deb https://deb.nodesource.com/node_0.12 trusty main
 # Io.js 1.x:      deb https://deb.nodesource.com/iojs_1.x trusty main
 apt_ppas:
-  - "deb https://deb.nodesource.com/node_0.12 trusty main"
+  - "deb https://deb.nodesource.com/node_4.x trusty main"
   - "ppa:git-core/ppa"
 
 # Any apt packages to install. Apt package versions may be specified like
@@ -67,11 +67,14 @@ requires_mysql: false
 # SSL certificates. If/when SSL is required, set back to true.
 ssl: false
 
+# Should the server use HTTP/2 instead of HTTP/1.1?
+h2: false
+
 # If ssl is enabled, these cert/key files will be used by nginx. You will need
 # to ensure these files are valid and already on the server (which you can do
 # via cloud-init, scp, etc).
-ssl_cert_path: /etc/ssl/star.bocoup.com.cert
-ssl_key_path: /etc/ssl/star.bocoup.com.key
+ssl_cert_path: /etc/letsencrypt/live/www.{{site_fqdn}}/fullchain.pem
+ssl_key_path: /etc/letsencrypt/live/www.{{site_fqdn}}/privkey.pem
 
 # Use a custom parameter for stronger DHE key exchange.
 dhe_param_path: /etc/ssl/certs/dhparam.pem
@@ -80,7 +83,7 @@ auth_basic: false
 
 # The directory that nginx will serve as the production site. This is typically
 # where your index.html file exists (or will exist after the build process).
-public_path: "{{site_path}}/public"
+public_path: "{{site_path}}"
 
 redirects: []
 
