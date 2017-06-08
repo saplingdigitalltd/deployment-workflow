@@ -82,6 +82,8 @@ auth_basic: false
 # where your index.html file exists (or will exist after the build process).
 public_path: "{{site_path}}/public"
 
+redirects: []
+
 # Nginx dir and conf dir.
 nginx_dir: /etc/nginx
 conf_dir: "{{nginx_dir}}/sites-available"
