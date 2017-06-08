@@ -28,11 +28,9 @@ The following important files and folders need to be copied to your project.
 * `public/`
 
 Copy this project's files so that the deploy and public directories are
-in the root of your project Git repository. Be sure to copy recursively
-and preserve file modes, eg. executable, so that the bash helper script
-continues to work. 
+in the root of your project Git repository. 
 
-	cp -rp . path/to/your/project/
+Do NOT copy the `.git` folder or any existing history will be wiped out.
 
 The `Vagrantfile` and `ansible.cfg` file should be placed in your
 project root directory, not the deploy directory.
@@ -61,6 +59,10 @@ In the Vagrantfile, set the local development url for the project (this
 should be the project name ending in the suffix `.dev`.
 
 	config.hostsupdater.aliases = ['groundskeeper.dev']
+
+Ensure the site is set to a unique ip address that's not in use
+
+	  config.vm.network :private_network, ip: '192.168.xx.xx'
 
 ### Inventory
 
