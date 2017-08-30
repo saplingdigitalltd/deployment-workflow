@@ -4,18 +4,19 @@
 - name: install apt packages for php 
   apt: name={{item}} state=latest update_cache=yes
   with_items:
-    - php5-fpm
-    - php5-memcached
-    - php5-mcrypt
-    - php5-gd
+    - php7.0-fpm
+    - php7.0-memcached
+    - php7.0-mcrypt
+    - php7.0-gd
     - imagemagick
-    - php5-imagick
-    - php5-curl
-    - libapache2-mod-php5
+    - php7.0-imagick
+    - php7.0-curl
+    - php7.0-mysql
+    - libapache2-mod-php7.0
     - imagemagick
 
 - name: set php.ini for php-fpm
-  lineinfile: dest=/etc/php5/fpm/php.ini regexp=fix_pathinfo=1 line=cgi.fix_pathinfo=0
+  lineinfile: dest=/etc/php/7.0/fpm/php.ini regexp=fix_pathinfo=1 line=cgi.fix_pathinfo=0
 
 - name: set max_filesize for uploads
   lineinfile: dest=/etc/php5/fpm/php.ini regexp=upload_max_filesize line=upload_max_filesize=10M
@@ -23,5 +24,5 @@
 - name: set post_max_size for uploads
   lineinfile: dest=/etc/php5/fpm/php.ini regexp=post_max_size line=post_max_size=10M
 
-- name: ensure php-fpm is running
-  service: name=php5-fpm state=started
+- name: set max file upload size to 10MB
+  lineinfile: dest=/etc/php/7.0/fpm/php.ini regexp="upload_max_size = 2M" line="upload_max_size = 10M"
