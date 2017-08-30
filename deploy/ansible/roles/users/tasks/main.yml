@@ -13,7 +13,7 @@
     dest=/home/{{ item.name }}/dotfiles
   sudo_user: "{{ item.name }}"
   when: item.dotfiles
-  with_items: users
+  with_items: "{{users}}"
   ignore_errors: yes
   tags: dotfiles
 
@@ -24,7 +24,7 @@
     creates: /home/{{ item.name }}/dotfiles_old
   sudo_user: "{{ item.name }}"
   register: sh
-  with_items: users
+  with_items: "{{users}}"
   when: item.dotfiles
   tags: dotfiles
   ignore_errors: yes
