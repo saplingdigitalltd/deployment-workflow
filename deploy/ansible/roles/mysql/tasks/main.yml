@@ -78,7 +78,7 @@
               password={{pass}} 
               priv=*.*:ALL 
               state=present
-  when: user and pass is defined
+  when: user is defined
   tags: new_user
 
 # Remove DB User
